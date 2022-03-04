@@ -103,7 +103,7 @@ class ArticleModel
         public function haveArticle ($id) {
             try {
                 $query = "SELECT 
-                               id
+                                id , title , description , content
                             FROM " . Constants::TABLE_ARTICLES . " WHERE status = 1 AND id = :id
                             ";
 

@@ -119,6 +119,12 @@ class ArticleController
     public function createArticle(Request $request, Response $response): Response
     {
         $postData  = $request->getParsedBody();
+        if(empty($postData)){
+            $postData    = $request->getBody()->getContents();
+            $postData = json_decode($postData, true);
+        }
+
+
 
 
 
@@ -256,9 +262,25 @@ class ArticleController
     public function editArticle(Request $request, Response $response): Response
     {
          $postData  = $request->getParsedBody();
+        if(empty($postData)){
+            $postData    = $request->getBody()->getContents();
+            $postData = json_decode($postData, true);
+        }
 
+     /*   if (!isset($postData['title']) || !isset($postData['description']) || !isset($postData['content']) ) {
+            $msg = "Missing required request parameters!";
+
+            $response->getBody()
+                ->write(Helper::responseWith(400, [
+                    'text' => $msg
+                ]));
+
+            return $response->withHeader('Content-Type', 'application/json')
+                ->withStatus(400);
+        }*/
 
         $haveArticle = $this->article->haveArticle($postData['id']);
+
 
         if(empty($haveArticle)){
             $msg = "This article doest exist";
@@ -271,7 +293,20 @@ class ArticleController
                 ->withStatus(400);
 
         }else{
+
+            if(!isset($postData['title'])){
+                $postData['title'] = $haveArticle['title'];
+            }
+            if(!isset($postData['description'])){
+                $postData['description'] = $haveArticle['description'];
+            }
+            if(!isset($postData['content'])){
+                $postData['content'] = $haveArticle['content'];
+            }
+
+
             $statement =  $this->article->updateArticle($postData);
+
             if($statement){
                 $msg = "Article is successfully update";
 
