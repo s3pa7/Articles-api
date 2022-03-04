@@ -6,7 +6,7 @@ declare(strict_types=1);
 use Slim\App;
 use App\Controller\ArticleController;
 use Slim\Routing\RouteCollectorProxy;
-use \App\Action\Docs\SwaggerUiAction;
+
 return function (App $app) {
 
 
